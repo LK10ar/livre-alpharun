@@ -1,82 +1,98 @@
-/* Styles de base pour le corps et le centrage */
+/* Styles de base pour le corps et le centrage vertical */
 body {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
-    background-color: #f0f0f0;
     margin: 0;
     font-family: sans-serif;
-    flex-direction: column; /* Permet d'aligner les boutons sous le livre */
+    background-color: #f0f0f0;
+    flex-direction: column;
+    width: 100%;
 }
 
 /* Conteneur pour centrer le livre et les boutons */
 .book-container {
     display: flex;
-    align-items: center; 
-    flex-direction: column; /* Place le livre au-dessus des boutons */
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;   /* centre horizontalement le livre */
+    justify-content: center; /* centre verticalement le livre + boutons */
+    width: 100%;           /* prend toute la largeur de l'écran */
+    margin: 0 auto;        /* centrage horizontal */
 }
 
-/* Le conteneur qui simule le livre */
+/* Le conteneur du livre */
 .book {
-    width: 300px; /* Largeur d'une seule page (à ajuster) */
-    height: 450px; /* Hauteur d'une seule page (à ajuster) */
-    position: relative; /* Très important pour positionner les pages */
-    transform-style: preserve-3d; /* Permet l'effet 3D */
-    perspective: 1500px; /* Donne l'effet de profondeur */
-    transform-origin: left; /* Le point de rotation est à gauche */
-}
-
-/* Style de chaque page */
-.page {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    position: absolute; /* Place toutes les pages au même endroit */
-    top: 0;
-    left: 0;
-    transform-origin: left; /* Point de rotation pour le tournage */
-    transition: transform 0.8s ease-in-out; /* Animation douce de rotation */
-    z-index: 1; /* Par défaut, les pages sont devant */
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); /* Petite ombre pour l'effet de profondeur */
-    /* Empêche le contenu du verso d'être visible avant le tournage */
-    backface-visibility: hidden; 
-}
-
-/* Contenu de la page (pour bien centrer les images/texte) */
-.page-content {
-    padding: 0; /* Suppression du padding pour que l'image remplisse l'espace */
-    height: 100%;
-    width: 100%;
+    position: relative;
+    width: 1000px;
+    height: 750px;
+    margin: 0 auto; /* centre horizontalement */
+    perspective: 2500px;
+    transform-style: preserve-3d;
+    transform-origin: center;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Style pour les images à l'intérieur des pages */
+/* Chaque page */
+.page {
+    position: absolute;
+    width: 500px;
+    height: 100%;
+    top: 0;
+    transition: all 0.3s ease;
+}
+
+/* quand une seule page visible (couverture ou dos) */
+.single-page .page {
+    left: 50%;
+    transform: translateX(-50%); /* ✅ centre parfaitement la page unique */
+}
+
+/* quand double page visible */
+.double-page .page:nth-child(odd) {
+    left: calc(50% - 500px); /* page de gauche */
+    transform: translateX(0);
+}
+.double-page .page:nth-child(even) {
+    left: 50%; /* page de droite */
+    transform: translateX(0);
+}
+
+
+/* Contenu de la page */
+.page-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Image */
 .page-content img {
     max-width: 100%;
     max-height: 100%;
-    width: 100%; /* S'assure que l'image remplit la page */
-    height: 100%; /* S'assure que l'image remplit la page */
-    object-fit: cover; /* Recadre si nécessaire pour remplir toute la page */
+    object-fit: cover;
+    display: block;
 }
 
-/* CLASSE CLÉ : Ajoutée par JavaScript pour faire tourner la page */
-.turned {
-    transform: rotateY(-180deg); /* La page tourne à 180 degrés */
-    z-index: 99; /* Met la page qui tourne par-dessus les autres pendant l'animation */
+/* Classes JS inutiles */
+.turned, .hidden-page {
+    z-index: 1;
+    transform: none;
 }
 
-/* CLASSE CLÉ : Ajoutée par JavaScript pour les pages déjà tournées et qui doivent rester en arrière-plan */
-.hidden-page {
-    /* Maintient la page à l'arrière pour qu'elle ne cache pas les suivantes */
-    z-index: -1; 
+/* Transition fluide (ajoutée pour effet de fondu) */
+.page[style*="display: none"] {
+    opacity: 0;
+}
+.page[style*="display: block"] {
+    opacity: 1;
 }
 
-/* Styles pour les boutons */
+/* Boutons */
 .nav-buttons {
     margin-top: 20px;
 }
@@ -89,7 +105,7 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: 0.3s;
 }
 
 button:hover:not(:disabled) {
@@ -97,6 +113,73 @@ button:hover:not(:disabled) {
 }
 
 button:disabled {
-    background-color: #bdc3c7; /* Couleur grise pour les boutons désactivés */
+    background-color: #bdc3c7;
     cursor: not-allowed;
+}
+/* NOUVEAUX STYLES D'AFFICHAGE */
+.hidden { display: none !important; }
+
+/* Styles pour centrer la vue de départ et le livre */
+.center-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Style du Bouton de Couverture Clicable */
+#cover-image-btn {
+    width: 500px;
+    height: 750px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+#cover-image-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.read-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 1.5em;
+    opacity: 0.8;
+}
+
+/* Style du bouton de fermeture 'X' */
+#close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2em;
+    padding: 10px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+/* MODIFICATION CLÉ DE LA RÈGLE .book pour retirer le décalage initial */
+.book {
+    width: 1000px; 
+    height: 750px; 
+    position: relative; 
+    transform-style: preserve-3d; 
+    perspective: 2500px; 
+    transform-origin: center; 
+    transition: transform 0.8s ease-in-out; 
+    cursor: default; 
+    transform: none; /* RETIRER LE TRANSLATEX(-50%) */
 }
