@@ -1,98 +1,90 @@
 /* Styles de base pour le corps et le centrage vertical */
 body {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
+    background-color: #000000;
     margin: 0;
     font-family: sans-serif;
-    background-color: #f0f0f0;
-    flex-direction: column;
+    flex-direction: column; 
     width: 100%;
 }
 
 /* Conteneur pour centrer le livre et les boutons */
 .book-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;   /* centre horizontalement le livre */
-    justify-content: center; /* centre verticalement le livre + boutons */
-    width: 100%;           /* prend toute la largeur de l'écran */
-    margin: 0 auto;        /* centrage horizontal */
+    align-items: center; 
+    flex-direction: column; 
+    margin-bottom: 20px;
+    margin: 0 auto 20px auto; /* Centrage horizontal */
 }
 
-/* Le conteneur du livre */
+/* Le conteneur qui simule le livre */
 .book {
-    position: relative;
-    width: 1000px;
-    height: 750px;
-    margin: 0 auto; /* centre horizontalement */
-    perspective: 2500px;
-    transform-style: preserve-3d;
-    transform-origin: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 500px; /* CLÉ : Largeur d'une seule page */
+    height: 750px; 
+    position: relative; 
+    transform-style: preserve-3d; 
+    perspective: 1500px; 
+    transform-origin: left; /* CLÉ : Rotation autour du bord gauche */
+    transition: transform 0.8s ease-in-out; 
+    cursor: default; 
 }
 
-/* Chaque page */
+/* Style de chaque page */
 .page {
-    position: absolute;
-    width: 500px;
+    width: 100%;
     height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    position: absolute; /* CLÉ : Superposition */
     top: 0;
-    transition: all 0.3s ease;
+    left: 0; 
+    transform-origin: left; 
+    transition: transform 0.8s ease-in-out; /* CLÉ : Animation de rotation */
+    z-index: 1; 
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
+    backface-visibility: hidden; 
+    box-sizing: border-box; 
 }
-
-/* quand une seule page visible (couverture ou dos) */
-.single-page .page {
-    left: 50%;
-    transform: translateX(-50%); /* ✅ centre parfaitement la page unique */
-}
-
-/* quand double page visible */
-.double-page .page:nth-child(odd) {
-    left: calc(50% - 500px); /* page de gauche */
-    transform: translateX(0);
-}
-.double-page .page:nth-child(even) {
-    left: 50%; /* page de droite */
-    transform: translateX(0);
-}
-
 
 /* Contenu de la page */
 .page-content {
-    width: 100%;
+    /* Padding pour la marge interne */
+    padding: 30px; 
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    
+    display: block; /* Mieux pour le texte que flex */
+    text-align: justify; 
+    line-height: 1.5;
+    font-size: 1.1em;
+    color: #333;
+    box-sizing: border-box;
 }
 
-/* Image */
+/* Style pour les images */
 .page-content img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: cover;
-    display: block;
+    object-fit: contain; 
+    display: block; 
+    margin: 0 auto; 
 }
 
-/* Classes JS inutiles */
-.turned, .hidden-page {
-    z-index: 1;
-    transform: none;
+/* CLASSE CLÉ : Ajoutée par JavaScript pour faire tourner la page */
+.turned {
+    transform: rotateY(-180deg); 
+    z-index: 99; /* Met la page qui tourne en avant */
 }
 
-/* Transition fluide (ajoutée pour effet de fondu) */
-.page[style*="display: none"] {
-    opacity: 0;
-}
-.page[style*="display: block"] {
-    opacity: 1;
+/* CLASSE CLÉ : Ajoutée par JavaScript pour les pages déjà tournées */
+.hidden-page {
+    z-index: -1; /* Met les pages derrière le livre */
 }
 
-/* Boutons */
+/* Styles pour les boutons */
 .nav-buttons {
     margin-top: 20px;
 }
@@ -105,7 +97,7 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
-    transition: 0.3s;
+    transition: background-color 0.3s;
 }
 
 button:hover:not(:disabled) {
@@ -113,73 +105,63 @@ button:hover:not(:disabled) {
 }
 
 button:disabled {
-    background-color: #bdc3c7;
+    background-color: #bdc3c7; 
     cursor: not-allowed;
 }
-/* NOUVEAUX STYLES D'AFFICHAGE */
-.hidden { display: none !important; }
 
-/* Styles pour centrer la vue de départ et le livre */
-.center-view {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    min-height: 100vh;
+/* --- TABLETTES --- */
+@media (max-width: 1024px) {
+    .book {
+        width: 400px;       /* largeur réduite */
+        height: 600px;      /* hauteur proportionnelle */
+    }
+
+    .page-content {
+        padding: 20px;      /* padding réduit */
+        font-size: 1em;     /* texte légèrement plus petit */
+    }
+
+    button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
 }
 
-/* Style du Bouton de Couverture Clicable */
-#cover-image-btn {
-    width: 500px;
-    height: 750px;
-    position: relative;
-    cursor: pointer;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+/* --- TÉLÉPHONES --- */
+@media (max-width: 650px) {
+    .book {
+        width: 90vw;                        /* prend 90% de la largeur de l’écran */
+        height: calc(90vw * 1.5);           /* hauteur proportionnelle pour garder le ratio */
+        transform-origin: left;              /* rotation autour du bord gauche */
+    }
+
+    .page-content {
+        padding: 10px;                       /* padding minimal pour mobile */
+        font-size: 0.9em;                    /* texte lisible sur petit écran */
+    }
+
+    button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
 }
 
-#cover-image-btn img {
+/* Animation de rotation de la page */
+.page {
+    position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    transform-origin: left;
+    transition: transform 0.8s ease-in-out;
+    backface-visibility: hidden;
 }
 
-.read-overlay {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 15px 0;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 1.5em;
-    opacity: 0.8;
+.turned {
+    transform: rotateY(-180deg);
+    z-index: 99;
 }
 
-/* Style du bouton de fermeture 'X' */
-#close-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    font-size: 2em;
-    padding: 10px 15px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 10000;
+.hidden-page {
+    z-index: -1;
 }
 
-/* MODIFICATION CLÉ DE LA RÈGLE .book pour retirer le décalage initial */
-.book {
-    width: 1000px; 
-    height: 750px; 
-    position: relative; 
-    transform-style: preserve-3d; 
-    perspective: 2500px; 
-    transform-origin: center; 
-    transition: transform 0.8s ease-in-out; 
-    cursor: default; 
-    transform: none; /* RETIRER LE TRANSLATEX(-50%) */
-}
