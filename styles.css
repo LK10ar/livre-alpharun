@@ -272,3 +272,24 @@ button:disabled {
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+
+@media (max-width: 600px) {
+    
+    /* --- Correction de la Vidéo d'Arrière-plan pour le mobile --- */
+    #background-video {
+        min-height: 100vh;
+        object-fit: cover; 
+        width: 100vw; 
+    }
+
+/* --- Contrôle de Volume --- */
+    #volume-control-wrapper {
+        top: 15px;
+        left: 15px;
+        padding: 8px;
+    }
+    
+    #volume-slider {
+        width: 80px; 
+    }
+
