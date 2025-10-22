@@ -1,3 +1,4 @@
+/* --- PAGE DE COUVERTURE --- */
 #cover-page {
     position: fixed; 
     top: 0;
@@ -17,7 +18,8 @@
     
     transition: opacity 0.5s ease-out; 
 }
-/* Styles de base pour le corps et le centrage vertical */
+
+/* --- CORPS DE PAGE ET FOND --- */
 body {
     display: flex;
     justify-content: center;
@@ -27,7 +29,7 @@ body {
     margin: 0;
     font-family: sans-serif;
     flex-direction: column; 
-    width: 100%;
+    /* width: 100%; est retiré car il est implicite */
 }
 #background-video {
     position: fixed; 
@@ -42,52 +44,51 @@ body {
 }
 
 
-/* Conteneur pour centrer le livre et les boutons */
+/* --- CONTENEUR DU LIVRE ET BOUTONS --- */
 .book-container {
     display: flex;
     align-items: center; 
     flex-direction: column; 
-    margin-bottom: 20px;
     margin: 0 auto 20px auto; /* Centrage horizontal */
 }
 
 /* Le conteneur qui simule le livre */
 .book {
-    width: 500px; /* CLÉ : Largeur d'une seule page */
+    width: 500px; /* Largeur d'une seule page */
     height: 750px; 
     position: relative; 
     transform-style: preserve-3d; 
     perspective: 1500px; 
-    transform-origin: left; /* CLÉ : Rotation autour du bord gauche */
+    transform-origin: left; /* Rotation autour du bord gauche */
     transition: transform 0.8s ease-in-out; 
     cursor: default; 
 }
 
-/* Style de chaque page */
+/* --- STYLES DES PAGES --- */
 .page {
     width: 100%;
     height: 100%;
     background-color: #fff;
     border: 1px solid #ccc;
-    position: absolute; /* CLÉ : Superposition */
+    position: absolute; /* Superposition */
     top: 0;
     left: 0; 
+    
+    /* Propriétés de rotation et de style 3D */
     transform-origin: left; 
-    transition: transform 0.8s ease-in-out; /* CLÉ : Animation de rotation */
+    transition: transform 0.8s ease-in-out;
+    backface-visibility: hidden; /* Cache le côté arrière non tourné */
     z-index: 1; 
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
-    backface-visibility: hidden; 
     box-sizing: border-box; 
 }
 
 /* Contenu de la page */
 .page-content {
-    /* Padding pour la marge interne */
     padding: 30px; 
     height: 100%;
     width: 100%;
-    
-    display: block; /* Mieux pour le texte que flex */
+    display: block; 
     text-align: justify; 
     line-height: 1.5;
     font-size: 1.1em;
@@ -104,18 +105,24 @@ body {
     margin: 0 auto; 
 }
 
-/* CLASSE CLÉ : Ajoutée par JavaScript pour faire tourner la page */
+/* CLASSE JS : Tourne la page */
 .turned {
     transform: rotateY(-180deg); 
     z-index: 99; /* Met la page qui tourne en avant */
 }
 
-/* CLASSE CLÉ : Ajoutée par JavaScript pour les pages déjà tournées */
+/* CLASSE JS : Pages déjà tournées et cachées derrière le livre */
 .hidden-page {
-    z-index: -1; /* Met les pages derrière le livre */
+    z-index: -1; 
 }
 
-/* Styles pour les boutons */
+/* Amélioration : Ombrage sur la face intérieure de la page (dos tourné) */
+.page:not(.turned):not(#p1) { /* Cible toutes les pages sauf la couverture, avant qu'elles soient tournées */
+    /* Petite ombre subtile pour simuler l'épaisseur/la lumière */
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+/* --- STYLES DES BOUTONS DE NAVIGATION --- */
 .nav-buttons {
     margin-top: 20px;
 }
@@ -140,69 +147,14 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* --- TABLETTES --- */
-@media (max-width: 1024px) {
-    .book {
-        width: 400px;       /* largeur réduite */
-        height: 600px;      /* hauteur proportionnelle */
-    }
 
-    .page-content {
-        padding: 20px;      /* padding réduit */
-        font-size: 1em;     /* texte légèrement plus petit */
-    }
-
-    button {
-        padding: 8px 15px;
-        font-size: 0.9em;
-    }
-}
-
-/* --- TÉLÉPHONES --- */
-@media (max-width: 650px) {
-    .book {
-        width: 90vw;                        /* prend 90% de la largeur de l’écran */
-        height: calc(90vw * 1.5);           /* hauteur proportionnelle pour garder le ratio */
-        transform-origin: left;              /* rotation autour du bord gauche */
-    }
-
-    .page-content {
-        padding: 10px;                       /* padding minimal pour mobile */
-        font-size: 0.9em;                    /* texte lisible sur petit écran */
-    }
-
-    button {
-        padding: 6px 10px;
-        font-size: 0.8em;
-    }
-}
-
-/* Animation de rotation de la page */
-.page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-origin: left;
-    transition: transform 0.8s ease-in-out;
-    backface-visibility: hidden;
-}
-
-.turned {
-    transform: rotateY(-180deg);
-    z-index: 99;
-}
-
-.hidden-page {
-    z-index: -1;
-}
-
+/* --- CONTRÔLE DE VOLUME --- */
 #volume-control-wrapper {
     position: fixed;
     top: 20px;
     left: 20px;
     z-index: 100;
     
-    /* Légère modification du fond pour qu'il soit moins opaque */
     background-color: rgba(30, 30, 30, 0.8); 
     backdrop-filter: blur(8px); 
     border-radius: 12px;
@@ -214,10 +166,10 @@ button:disabled {
     overflow: visible; 
     transition: width 0.5s, background-color 0.5s; 
     
-    /* EFFET NÉON AJUSTÉ : Ombre plus forte pour qu'elle soit visible sur le fond sombre */
+    /* EFFET NÉON */
     box-shadow: 0 0 10px #00FFFF, 
                 0 0 20px rgba(0, 100, 255, 0.7); 
-    animation: neon-glow 2s infinite alternate;
+    /* L'animation neon-glow n'est pas définie ici, assurez-vous qu'elle est dans un bloc @keyframes si vous la voulez */
 }
 
 #volume-control-wrapper:hover #volume-slider-bar {
@@ -273,16 +225,44 @@ button:disabled {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 600px) {
-    
-    /* --- Correction de la Vidéo d'Arrière-plan pour le mobile --- */
-    #background-video {
-        min-height: 100vh;
-        object-fit: cover; 
-        width: 100vw; 
+/* --- MEDIA QUERIES (Responsif) --- */
+
+/* TABLETTES */
+@media (max-width: 1024px) {
+    .book {
+        width: 400px;       
+        height: 600px;      
     }
 
-/* --- Contrôle de Volume --- */
+    .page-content {
+        padding: 20px;      
+        font-size: 1em;     
+    }
+
+    button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+}
+
+/* TÉLÉPHONES */
+@media (max-width: 650px) {
+    .book {
+        width: 90vw;                        
+        height: calc(90vw * 1.5);           
+    }
+
+    .page-content {
+        padding: 10px;                       
+        font-size: 0.9em;                    
+    }
+
+    button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    
+    /* Contrôle de Volume pour mobile */
     #volume-control-wrapper {
         top: 15px;
         left: 15px;
@@ -292,4 +272,11 @@ button:disabled {
     #volume-slider {
         width: 80px; 
     }
-
+    
+    /* Vidéo d'Arrière-plan pour le mobile */
+    #background-video {
+        min-height: 100vh;
+        object-fit: cover; 
+        width: 100vw; 
+    }
+}
