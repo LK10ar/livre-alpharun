@@ -7,7 +7,10 @@
     
     <link rel="stylesheet" href="styles.css"> 
    
-     <div id="cover-page">
+</head>
+<body>
+    
+    <div id="cover-page">
         <p>clique pour entrée...</p>
     </div>
 
@@ -16,9 +19,6 @@
         Votre navigateur ne supporte pas la balise vidéo.
     </video>
     
-    </head>
-<body>
-
     <div class="book-container">
         
         <div class="book" id="book">
@@ -97,9 +97,8 @@
         </div>
 
     </div>
- </div>
 
-    <audio id="background-audio" loop muted>
+    <audio id="background-audio" loop>
         <source src="image/music.m4a" type="audio/mp3">
         Votre navigateur ne supporte pas la balise audio.
     </audio>
@@ -132,9 +131,12 @@
         
         function enterPage() {
             // 1. Démarrer la musique
-            audio.muted = false; 
-            audio.play().catch(error => {
-                console.log("Échec du lancement audio après le clic.");
+            // On tente le play() suite à l'interaction utilisateur (clic/toucher)
+            audio.play().then(() => {
+                // Si la lecture réussit, on retire le mute (si le navigateur l'a mis automatiquement)
+                audio.muted = false; 
+            }).catch(error => {
+                console.error("Échec du lancement audio après le clic.", error);
             });
             
             // 2. Masquer la page de couverture
@@ -143,10 +145,14 @@
                 coverPage.style.display = 'none';
             }, 500);
 
+            // 3. Retirer les écouteurs pour ne pas rejouer
             coverPage.removeEventListener('click', enterPage);
             coverPage.removeEventListener('touchstart', enterPage);
         }
 
+        // 🚨 IMPORTANT : On mute l'audio par défaut en JS pour être sûr, si vous voulez qu'il soit muet avant l'entrée.
+        audio.muted = true; 
+        
         coverPage.addEventListener('click', enterPage);
         coverPage.addEventListener('touchstart', enterPage);
         
@@ -158,20 +164,25 @@
             const newVolume = parseFloat(e.target.value);
             audio.volume = newVolume;
             
-            audio.muted = false;
+            audio.muted = false; // Unmute si on bouge le slider
             
             volumeMuteToggle.src = newVolume > 0 ? ICON_ON : ICON_MUTE;
             
-            lastVolume = newVolume;
+            // On enregistre lastVolume seulement si l'audio est audible
+            if (newVolume > 0) {
+                lastVolume = newVolume;
+            }
         });
 
         volumeMuteToggle.addEventListener('click', () => {
             if (audio.muted) {
+                // Unmute : Rétablir le dernier volume connu (ou 0.5 si le dernier était 0)
                 audio.volume = lastVolume > 0 ? lastVolume : 0.5;
                 volumeSlider.value = audio.volume;
                 audio.muted = false;
                 volumeMuteToggle.src = ICON_ON;
             } else {
+                // Mute : Enregistrer le volume actuel et le couper
                 lastVolume = audio.volume; 
                 audio.muted = true;
                 volumeSlider.value = 0;
@@ -182,3 +193,5 @@
     <script src="script.js"></script> 
 </body>
 </html>
+
+    </
