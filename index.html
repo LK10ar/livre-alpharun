@@ -3,9 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Livre Interactif de 52 Pages</title>
-    <link rel="stylesheet" href="styles.css"> 
-</head>
+    <title>Mon Livre Interactif (Page Simple)</title>
+    
+    <style>
+        /* Styles de base pour le corps et le centrage */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #141414;
+            margin: 0;
+            font-family: sans-serif;
+            flex-direction: column; 
+        }
+
+        /* Conteneur pour centrer le livre et les boutons */
+        .book-container {
+            display: flex;
+            align-items: center; 
+            flex-direction: column; 
+            margin-bottom: 20px;
+        }
+
+        /* Le conteneur qui simule le livre */
+        .book {
+            width: 500px; /* Taille d'une seule page (pour un meilleur confort) */
+            height: 750px; 
+            position: relative; 
+            transform-style: preserve-3d; 
+            perspective: 1500px; 
+            transform-origin: left; /* CLÉ : Rotation autour du bord gauche */
+            transition: transform 0.8s ease-in-out; 
+            cursor: default; 
+        }
+
+        /* Style de chaque page */
+        .page {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            position: absolute; /* CLÉ : Superposition */
+            top: 0;
+            left: 0; 
+            transform-origin: left; 
+            transition: transform 0.8s ease-in-out; /* CLÉ : Animation de rotation */
+            z-index: 1; 
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
+            backface-visibility: hidden; 
+        }
+
+        /* Contenu de la page */
+        .page-content {
+            padding: 0; 
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Style pour les images */
+        .page-content img {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        /* CLASSE CLÉ : Ajoutée par JavaScript pour faire tourner la page */
+        .turned {
+            transform: rotateY(-180deg); 
+            z-index: 99; /* Met la page qui tourne en avant */
+        }
+
+        /* CLASSE CLÉ : Ajoutée par JavaScript pour les pages déjà tournées */
+        .hidden-page {
+            z-index: -1; /* Met les pages derrière le livre */
+        }
+
+        /* Styles pour les boutons */
+        .nav-buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7; 
+            cursor: not-allowed;
+        }
+    </style>
+    </head>
 <body>
 
     <div class="book-container">
@@ -18,34 +122,34 @@
                 </div>
             </div>
             
-            <div class="page" id="p2"><div class="page-content"><img src="image/livre%20parkour1.jpg" alt="Page 2"></div></div>
-            <div class="page" id="p3"><div class="page-content"><img src="image/livre%20parkour2.jpg" alt="Page 3"></div></div>
-            <div class="page" id="p4"><div class="page-content"><img src="image/livre%20parkour3.jpg" alt="Page 4"></div></div>
-            <div class="page" id="p5"><div class="page-content"><img src="image/livre%20parkour4.jpg" alt="Page 5"></div></div>
-            <div class="page" id="p6"><div class="page-content"><img src="image/livre%20parkour5.jpg" alt="Page 6"></div></div>
-            <div class="page" id="p7"><div class="page-content"><img src="image/livre%20parkour6.jpg" alt="Page 7"></div></div>
-            <div class="page" id="p8"><div class="page-content"><img src="image/livre%20parkour7.jpg" alt="Page 8"></div></div>
-            <div class="page" id="p9"><div class="page-content"><img src="image/livre%20parkour8.jpg" alt="Page 9"></div></div>
-            <div class="page" id="p10"><div class="page-content"><img src="image/livre%20parkour9.jpg" alt="Page 10"></div></div>
-            <div class="page" id="p11"><div class="page-content"><img src="image/livre%20parkour10.jpg" alt="Page 11"></div></div>
-            <div class="page" id="p12"><div class="page-content"><img src="image/livre%20parkour11.jpg" alt="Page 12"></div></div>
-            <div class="page" id="p13"><div class="page-content"><img src="image/livre%20parkour12.jpg" alt="Page 13"></div></div>
-            <div class="page" id="p14"><div class="page-content"><img src="image/livre%20parkour13.jpg" alt="Page 14"></div></div>
-            <div class="page" id="p15"><div class="page-content"><img src="image/livre%20parkour14.jpg" alt="Page 15"></div></div>
-            <div class="page" id="p16"><div class="page-content"><img src="image/livre%20parkour15.jpg" alt="Page 16"></div></div>
-            <div class="page" id="p17"><div class="page-content"><img src="image/livre%20parkour16.jpg" alt="Page 17"></div></div>
-            <div class="page" id="p18"><div class="page-content"><img src="image/livre%20parkour17.jpg" alt="Page 18"></div></div>
-            <div class="page" id="p19"><div class="page-content"><img src="image/livre%20parkour18.jpg" alt="Page 19"></div></div>
-            <div class="page" id="p20"><div class="page-content"><img src="image/livre%20parkour19.jpg" alt="Page 20"></div></div>
-            <div class="page" id="p21"><div class="page-content"><img src="image/livre%20parkour20.jpg" alt="Page 21"></div></div>
-            <div class="page" id="p22"><div class="page-content"><img src="image/livre%20parkour21.jpg" alt="Page 22"></div></div>
-            <div class="page" id="p23"><div class="page-content"><img src="image/livre%20parkour22.jpg" alt="Page 23"></div></div>
-            <div class="page" id="p24"><div class="page-content"><img src="image/livre%20parkour23.jpg" alt="Page 24"></div></div>
-            <div class="page" id="p25"><div class="page-content"><img src="image/livre%20parkour24.jpg" alt="Page 25"></div></div>
-            <div class="page" id="p26"><div class="page-content"><img src="image/livre%20parkour25.jpg" alt="Page 26"></div></div>
-            <div class="page" id="p27"><div class="page-content"><img src="image/livre%20parkour26.jpg" alt="Page 27"></div></div>
-            <div class="page" id="p28"><div class="page-content"><img src="image/livre%20parkour27.jpg" alt="Page 28"></div></div>
-            <div class="page" id="p29"><div class="page-content"><img src="image/livre%20parkour28.jpg" alt="Page 29"></div></div>
+           <div class="page" id="p2"><div class="page-content"><img src="image/livre%20parkour2.jpg" alt="Page 2"></div></div> 
+            <div class="page" id="p3"><div class="page-content"><img src="image/livre%20parkour3.jpg" alt="Page 3"></div></div>
+            <div class="page" id="p4"><div class="page-content"><img src="image/livre%20parkour4.jpg" alt="Page 4"></div></div>
+            <div class="page" id="p5"><div class="page-content"><img src="image/livre%20parkour5.jpg" alt="Page 5"></div></div>
+            <div class="page" id="p6"><div class="page-content"><img src="image/livre%20parkour6.jpg" alt="Page 6"></div></div>
+            <div class="page" id="p7"><div class="page-content"><img src="image/livre%20parkour7.jpg" alt="Page 7"></div></div>
+            <div class="page" id="p8"><div class="page-content"><img src="image/livre%20parkour8.jpg" alt="Page 8"></div></div>
+            <div class="page" id="p9"><div class="page-content"><img src="image/livre%20parkour9.jpg" alt="Page 9"></div></div>
+            <div class="page" id="p10"><div class="page-content"><img src="image/livre%20parkour10.jpg" alt="Page 10"></div></div>
+            <div class="page" id="p11"><div class="page-content"><img src="image/livre%20parkour11.jpg" alt="Page 11"></div></div>
+            <div class="page" id="p12"><div class="page-content"><img src="image/livre%20parkour12.jpg" alt="Page 12"></div></div>
+            <div class="page" id="p13"><div class="page-content"><img src="image/livre%20parkour13.jpg" alt="Page 13"></div></div>
+            <div class="page" id="p14"><div class="page-content"><img src="image/livre%20parkour14.jpg" alt="Page 14"></div></div>
+            <div class="page" id="p15"><div class="page-content"><img src="image/livre%20parkour15.jpg" alt="Page 15"></div></div>
+            <div class="page" id="p16"><div class="page-content"><img src="image/livre%20parkour16.jpg" alt="Page 16"></div></div>
+            <div class="page" id="p17"><div class="page-content"><img src="image/livre%20parkour17.jpg" alt="Page 17"></div></div>
+            <div class="page" id="p18"><div class="page-content"><img src="image/livre%20parkour18.jpg" alt="Page 18"></div></div>
+            <div class="page" id="p19"><div class="page-content"><img src="image/livre%20parkour19.jpg" alt="Page 19"></div></div>
+            <div class="page" id="p20"><div class="page-content"><img src="image/livre%20parkour20.jpg" alt="Page 20"></div></div>
+            <div class="page" id="p21"><div class="page-content"><img src="image/livre%20parkour21.jpg" alt="Page 21"></div></div>
+            <div class="page" id="p22"><div class="page-content"><img src="image/livre%20parkour22.jpg" alt="Page 22"></div></div>
+            <div class="page" id="p23"><div class="page-content"><img src="image/livre%20parkour23.jpg" alt="Page 23"></div></div>
+            <div class="page" id="p24"><div class="page-content"><img src="image/livre%20parkour24.jpg" alt="Page 24"></div></div>
+            <div class="page" id="p25"><div class="page-content"><img src="image/livre%20parkour25.jpg" alt="Page 25"></div></div>
+            <div class="page" id="p26"><div class="page-content"><img src="image/livre%20parkour26.jpg" alt="Page 26"></div></div>
+            <div class="page" id="p27"><div class="page-content"><img src="image/livre%20parkour27.jpg" alt="Page 27"></div></div>
+            <div class="page" id="p28"><div class="page-content"><img src="image/livre%20parkour28.jpg" alt="Page 28"></div></div>
+            <div class="page" id="p29"><div class="page-content"><img src="image/livre%20parkour29.jpg" alt="Page 29"></div></div>
             <div class="page" id="p30"><div class="page-content"><img src="image/livre%20parkour29.jpg" alt="Page 30"></div></div>
             <div class="page" id="p31"><div class="page-content"><img src="image/livre%20parkour30.jpg" alt="Page 31"></div></div>
             <div class="page" id="p32"><div class="page-content"><img src="image/livre%20parkour31.jpg" alt="Page 32"></div></div>
@@ -68,12 +172,14 @@
             <div class="page" id="p49"><div class="page-content"><img src="image/livre%20parkour48.jpg" alt="Page 49"></div></div>
             <div class="page" id="p50"><div class="page-content"><img src="image/livre%20parkour49.jpg" alt="Page 50"></div></div>
             <div class="page" id="p51"><div class="page-content"><img src="image/livre%20parkour50.jpg" alt="Page 51"></div></div>
-
+            
             <div class="page" id="p52">
                 <div class="page-content">
-                    <img src="image/livre%20parkour51.jpg" alt="Dos du livre">
+                    <img src="image/livre%20parkour52.jpg" alt="Dos du livre">
                 </div>
             </div>
+            
+        </div>
             
         </div>
         
