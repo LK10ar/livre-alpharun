@@ -196,3 +196,79 @@ button:disabled {
     z-index: -1;
 }
 
+#volume-control-wrapper {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    
+    /* Légère modification du fond pour qu'il soit moins opaque */
+    background-color: rgba(30, 30, 30, 0.8); 
+    backdrop-filter: blur(8px); 
+    border-radius: 12px;
+    padding: 10px; 
+    
+    display: flex; 
+    align-items: center;
+    cursor: pointer;
+    overflow: visible; 
+    transition: width 0.5s, background-color 0.5s; 
+    
+    /* EFFET NÉON AJUSTÉ : Ombre plus forte pour qu'elle soit visible sur le fond sombre */
+    box-shadow: 0 0 10px #00FFFF, 
+                0 0 20px rgba(0, 100, 255, 0.7); 
+    animation: neon-glow 2s infinite alternate;
+}
+
+#volume-control-wrapper:hover #volume-slider-bar {
+    width: 100px;
+    opacity: 1;
+    pointer-events: auto;
+    margin-left: 10px;
+}
+
+#volume-mute-toggle {
+    cursor: pointer;
+    width: 24px; 
+    height: 24px;
+    filter: invert(1) drop-shadow(0 0 2px rgba(0, 0, 0, 0.5)); 
+    transition: margin-right 0.5s;
+}
+
+#volume-slider-bar {
+    margin-left: 15px; 
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden; 
+    transition: width 0.5s, opacity 0.5s, margin-left 0.5s;
+    display: flex;
+    align-items: center;
+}
+
+#volume-slider {
+    width: 100px; 
+    height: 6px; 
+    cursor: pointer;
+    -webkit-appearance: none; 
+    appearance: none;
+    background: transparent;
+}
+
+#volume-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -4px; 
+    width: 14px;
+    height: 14px;
+    background: white; 
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
