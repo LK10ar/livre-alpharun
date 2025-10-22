@@ -1,4 +1,3 @@
-Voici le js :
 
 const pages = document.querySelectorAll('.page');
 const prevBtn = document.getElementById('prev-btn');
