@@ -88,7 +88,88 @@
         </div>
 
     </div>
+ </div>
 
+    <audio id="background-audio" loop muted>
+        <source src="images/music.m4a" type="audio/mp3">
+        Votre navigateur ne supporte pas la balise audio.
+    </audio>
+    
+    <div id="volume-control-wrapper">
+        
+        <img id="volume-mute-toggle" src="images/icons8-son-50.png" alt="Contrôle Volume">
+        
+        <div id="volume-slider-bar">
+             <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('background-audio');
+        const coverPage = document.getElementById('cover-page');
+        const volumeMuteToggle = document.getElementById('volume-mute-toggle'); 
+        const volumeSlider = document.getElementById('volume-slider');
+        
+        // Chemins des icônes
+        const ICON_ON = 'images/icons8-son-50.png';
+        const ICON_MUTE = 'images/icons8-mute-50.png';
+        
+        audio.volume = 0.5; 
+        let lastVolume = 0.5;
+        
+        // **********************************
+        // 1. GESTION DE L'ENTRÉE ET DE L'AUDIO
+        // **********************************
+        
+        function enterPage() {
+            // 1. Démarrer la musique
+            audio.muted = false; 
+            audio.play().catch(error => {
+                console.log("Échec du lancement audio après le clic.");
+            });
+            
+            // 2. Masquer la page de couverture
+            coverPage.style.opacity = '0';
+            setTimeout(() => {
+                coverPage.style.display = 'none';
+            }, 500);
+
+            coverPage.removeEventListener('click', enterPage);
+            coverPage.removeEventListener('touchstart', enterPage);
+        }
+
+        coverPage.addEventListener('click', enterPage);
+        coverPage.addEventListener('touchstart', enterPage);
+        
+        // **********************************
+        // 2. GESTION DU VOLUME ET DU MUTE
+        // **********************************
+        
+        volumeSlider.addEventListener('input', (e) => {
+            const newVolume = parseFloat(e.target.value);
+            audio.volume = newVolume;
+            
+            audio.muted = false;
+            
+            volumeMuteToggle.src = newVolume > 0 ? ICON_ON : ICON_MUTE;
+            
+            lastVolume = newVolume;
+        });
+
+        volumeMuteToggle.addEventListener('click', () => {
+            if (audio.muted) {
+                audio.volume = lastVolume > 0 ? lastVolume : 0.5;
+                volumeSlider.value = audio.volume;
+                audio.muted = false;
+                volumeMuteToggle.src = ICON_ON;
+            } else {
+                lastVolume = audio.volume; 
+                audio.muted = true;
+                volumeSlider.value = 0;
+                volumeMuteToggle.src = ICON_MUTE;
+            }
+        });
+    </script>
     <script src="script.js"></script> 
 </body>
 </html>
