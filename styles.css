@@ -1,282 +1,279 @@
 /* --- PAGE DE COUVERTURE --- */
 #cover-page {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    z-index: 9999;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    color: white;
-    font-size: 1.5em;
-    cursor: pointer; 
-    
-    transition: opacity 0.5s ease-out; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 9999;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer; 
+    
+    transition: opacity 0.5s ease-out; 
 }
 
 /* --- CORPS DE PAGE ET FOND --- */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #000000;
-    margin: 0;
-    font-family: sans-serif;
-    flex-direction: column; 
-    /* width: 100%; est retiré car il est implicite */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #000000;
+    margin: 0;
+    font-family: sans-serif;
+    flex-direction: column; 
 }
 #background-video {
-    position: fixed; 
-    right: 0;
-    bottom: 0;
-    min-width: 100%; 
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -100; 
-    object-fit: cover;
+    position: fixed; 
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100; 
+    object-fit: cover;
 }
 
 
 /* --- CONTENEUR DU LIVRE ET BOUTONS --- */
 .book-container {
-    display: flex;
-    align-items: center; 
-    flex-direction: column; 
-    margin: 0 auto 20px auto; /* Centrage horizontal */
+    display: flex;
+    align-items: center; 
+    flex-direction: column; 
+    margin: 0 auto 20px auto; /* Centrage horizontal */
 }
 
-/* Le conteneur qui simule le livre */
+/* Le conteneur qui simule le livre (TAILLE DESKTOP - PAR DÉFAUT) */
 .book {
-    width: 500px; /* Largeur d'une seule page */
-    height: 750px; 
-    position: relative; 
-    transform-style: preserve-3d; 
-    perspective: 1500px; 
-    transform-origin: left; /* Rotation autour du bord gauche */
-    transition: transform 0.8s ease-in-out; 
-    cursor: default; 
+    width: 700px; /* NOUVELLE LARGEUR PLUS GRANDE POUR LE DESKTOP */
+    height: 1050px; /* NOUVELLE HAUTEUR (700 * 1.5) */
+    position: relative; 
+    transform-style: preserve-3d; 
+    perspective: 1500px; 
+    transform-origin: left;
+    transition: transform 0.8s ease-in-out; 
+    cursor: default; 
 }
 
 /* --- STYLES DES PAGES --- */
 .page {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    position: absolute; /* Superposition */
-    top: 0;
-    left: 0; 
-    
-    /* Propriétés de rotation et de style 3D */
-    transform-origin: left; 
-    transition: transform 0.8s ease-in-out;
-    backface-visibility: hidden; /* Cache le côté arrière non tourné */
-    z-index: 1; 
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
-    box-sizing: border-box; 
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 0;
+    left: 0; 
+    
+    /* Propriétés de rotation et de style 3D */
+    transform-origin: left; 
+    transition: transform 0.8s ease-in-out;
+    backface-visibility: hidden;
+    z-index: 1; 
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
+    box-sizing: border-box; 
 }
 
 /* Contenu de la page */
 .page-content {
-    padding: 30px; 
-    height: 100%;
-    width: 100%;
-    display: block; 
-    text-align: justify; 
-    line-height: 1.5;
-    font-size: 1.1em;
-    color: #333;
-    box-sizing: border-box;
+    padding: 30px; 
+    height: 100%;
+    width: 100%;
+    display: block; 
+    text-align: justify; 
+    line-height: 1.5;
+    font-size: 1.1em;
+    color: #333;
+    box-sizing: border-box;
 }
 
 /* Style pour les images */
 .page-content img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; 
-    display: block; 
-    margin: 0 auto; 
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; 
+    display: block; 
+    margin: 0 auto; 
 }
 
 /* CLASSE JS : Tourne la page */
 .turned {
-    transform: rotateY(-180deg); 
-    z-index: 99; /* Met la page qui tourne en avant */
+    transform: rotateY(-180deg); 
+    z-index: 99;
 }
 
 /* CLASSE JS : Pages déjà tournées et cachées derrière le livre */
 .hidden-page {
-    z-index: -1; 
+    z-index: -1; 
 }
 
 /* Amélioration : Ombrage sur la face intérieure de la page (dos tourné) */
-.page:not(.turned):not(#p1) { /* Cible toutes les pages sauf la couverture, avant qu'elles soient tournées */
-    /* Petite ombre subtile pour simuler l'épaisseur/la lumière */
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1); 
+.page:not(.turned):not(#p1) {
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1); 
 }
 
 /* --- STYLES DES BOUTONS DE NAVIGATION --- */
 .nav-buttons {
-    margin-top: 20px;
+    margin-top: 20px;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    cursor: pointer;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 button:hover:not(:disabled) {
-    background-color: #2980b9;
+    background-color: #2980b9;
 }
 
 button:disabled {
-    background-color: #bdc3c7; 
-    cursor: not-allowed;
+    background-color: #bdc3c7; 
+    cursor: not-allowed;
 }
 
 
 /* --- CONTRÔLE DE VOLUME --- */
 #volume-control-wrapper {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    
-    background-color: rgba(30, 30, 30, 0.8); 
-    backdrop-filter: blur(8px); 
-    border-radius: 12px;
-    padding: 10px; 
-    
-    display: flex; 
-    align-items: center;
-    cursor: pointer;
-    overflow: visible; 
-    transition: width 0.5s, background-color 0.5s; 
-    
-    /* EFFET NÉON */
-    box-shadow: 0 0 10px #00FFFF, 
-                0 0 20px rgba(0, 100, 255, 0.7); 
-    /* L'animation neon-glow n'est pas définie ici, assurez-vous qu'elle est dans un bloc @keyframes si vous la voulez */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    
+    background-color: rgba(30, 30, 30, 0.8); 
+    backdrop-filter: blur(8px); 
+    border-radius: 12px;
+    padding: 10px; 
+    
+    display: flex; 
+    align-items: center;
+    cursor: pointer;
+    overflow: visible; 
+    transition: width 0.5s, background-color 0.5s; 
+    
+    /* EFFET NÉON */
+    box-shadow: 0 0 10px #00FFFF, 
+                0 0 20px rgba(0, 100, 255, 0.7); 
 }
 
 #volume-control-wrapper:hover #volume-slider-bar {
-    width: 100px;
-    opacity: 1;
-    pointer-events: auto;
-    margin-left: 10px;
+    width: 100px;
+    opacity: 1;
+    pointer-events: auto;
+    margin-left: 10px;
 }
 
 #volume-mute-toggle {
-    cursor: pointer;
-    width: 24px; 
-    height: 24px;
-    filter: invert(1) drop-shadow(0 0 2px rgba(0, 0, 0, 0.5)); 
-    transition: margin-right 0.5s;
+    cursor: pointer;
+    width: 24px; 
+    height: 24px;
+    filter: invert(1) drop-shadow(0 0 2px rgba(0, 0, 0, 0.5)); 
+    transition: margin-right 0.5s;
 }
 
 #volume-slider-bar {
-    margin-left: 15px; 
-    width: 0;
-    opacity: 0;
-    pointer-events: none;
-    overflow: hidden; 
-    transition: width 0.5s, opacity 0.5s, margin-left 0.5s;
-    display: flex;
-    align-items: center;
+    margin-left: 15px; 
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden; 
+    transition: width 0.5s, opacity 0.5s, margin-left 0.5s;
+    display: flex;
+    align-items: center;
 }
 
 #volume-slider {
-    width: 100px; 
-    height: 6px; 
-    cursor: pointer;
-    -webkit-appearance: none; 
-    appearance: none;
-    background: transparent;
+    width: 100px; 
+    height: 6px; 
+    cursor: pointer;
+    -webkit-appearance: none; 
+    appearance: none;
+    background: transparent;
 }
 
 #volume-slider::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 3px;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
 }
 
 #volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -4px; 
-    width: 14px;
-    height: 14px;
-    background: white; 
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -4px; 
+    width: 14px;
+    height: 14px;
+    background: white; 
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 /* --- MEDIA QUERIES (Responsif) --- */
 
-/* TABLETTES */
+/* TABLETTES (Écrase la taille Desktop) */
 @media (max-width: 1024px) {
-    .book {
-        width: 400px;       
-        height: 600px;      
-    }
+    .book {
+        width: 400px; /* Taille tablette */
+        height: 600px; /* Taille tablette */
+    }
 
-    .page-content {
-        padding: 20px;      
-        font-size: 1em;     
-    }
+    .page-content {
+        padding: 20px;      
+        font-size: 1em;    
+    }
 
-    button {
-        padding: 8px 15px;
-        font-size: 0.9em;
-    }
+    button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
 }
 
-/* TÉLÉPHONES */
+/* TÉLÉPHONES (Écrase la taille Tablette et Desktop) */
 @media (max-width: 650px) {
-    .book {
-        width: 90vw;                        
-        height: calc(90vw * 1.5);           
-    }
+    .book {
+        width: 90vw; /* Utilisation de VW pour un ajustement parfait sur mobile */
+        height: calc(90vw * 1.5);
+    }
 
-    .page-content {
-        padding: 10px;                       
-        font-size: 0.9em;                    
-    }
+    .page-content {
+        padding: 10px;
+        font-size: 0.9em;
+    }
 
-    button {
-        padding: 6px 10px;
-        font-size: 0.8em;
-    }
-    
-    /* Contrôle de Volume pour mobile */
-    #volume-control-wrapper {
-        top: 15px;
-        left: 15px;
-        padding: 8px;
-    }
-    
-    #volume-slider {
-        width: 80px; 
-    }
-    
-    /* Vidéo d'Arrière-plan pour le mobile */
-    #background-video {
-        min-height: 100vh;
-        object-fit: cover; 
-        width: 100vw; 
-    }
+    button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    
+    /* Contrôle de Volume pour mobile */
+    #volume-control-wrapper {
+        top: 15px;
+        left: 15px;
+        padding: 8px;
+    }
+    
+    #volume-slider {
+        width: 80px; 
+    }
+    
+    /* Vidéo d'Arrière-plan pour le mobile */
+    #background-video {
+        min-height: 100vh;
+        object-fit: cover; 
+        width: 100vw; 
+    }
 }
