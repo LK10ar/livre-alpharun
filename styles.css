@@ -247,7 +247,7 @@ button:disabled {
 }
 
 /* TÉLÉPHONES */
-@media (max-width: 650px) {
+@media (max-width: 750px) {
     .book {
         width: 90vw;                        
         height: calc(90vw * 1.5);           
