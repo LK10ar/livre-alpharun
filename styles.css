@@ -84,17 +84,18 @@ body {
 }
 
 /* Contenu de la page */
-.page-content {
-    padding: 0px; 
-    height: 100%;
-    width: 100%;
-    display: block; 
-    text-align: justify; 
-    line-height: 1.5;
-    font-size: 1.1em;
-    color: #333;
-    box-sizing: border-box;
+.page-content img {
+    /* Gardez ceci pour que l'image ne dépasse pas la page */
+    max-height: 100%;
+    display: block;
+
+    /* MODIFICATIONS CLÉS : */
+    width: 100%; /* Forcer à prendre toute la largeur disponible */
+    height: 100%; /* Forcer à prendre toute la hauteur disponible */
+    object-fit: contain; /* Garder 'contain' si vous voulez qu'elle ne soit pas coupée */
+    margin: 0; /* Supprimez le centrage automatique */
 }
+
 
 /* Style pour les images */
 .page-content img {
