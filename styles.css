@@ -56,6 +56,7 @@ body {
     flex-direction: column; 
     /* width: 100%; est retiré car il est implicite */
 }
+
 #background-video {
     position: fixed; 
     right: 0;
