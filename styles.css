@@ -67,9 +67,9 @@ body {
 /* --- STYLES DES PAGES --- */
 .page {
     width: 100%;
-    height: 70%;
+    height: 100%;
     background-color: #fff;
-    border: 1px solid #ccc;
+    
     position: absolute; /* Superposition */
     top: 0;
     left: 0; 
